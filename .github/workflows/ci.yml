@@ -71,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
-          path: Tarun/
+          path: dist/
 
   docker:
     name: Docker Build and Push
@@ -90,7 +90,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts
-          path: Tarun
+          path: dist
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
