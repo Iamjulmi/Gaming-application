@@ -1,1 +1,38 @@
+name: CI/CD Pipeline
 
+on:
+ push:
+   branches: [main]
+   paths-ignore:
+      - kubernetes/Deployment.yml # to avoild the contenuoes loop we are ignoring this path
+ pull_request:
+    branches: [main]
+
+
+jobs:
+  test:
+    name: Unit Testing
+    runs-on: ubuntu-latest
+    steps:
+       - name: Code checkout
+         uses: actions/checkout@v4
+
+       - name: Set-up Nodejs
+         uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+           cache: 'npm'
+
+       -  name: Install Dependencies
+          run: npm ci
+
+       -  name: Run unit testing
+          run: npm run
+          
+         
+
+
+
+    
+  
+ 
