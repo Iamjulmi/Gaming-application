@@ -10,25 +10,23 @@ on:
 
 
 jobs:
-  test:
-    name: Unit Testing
-    runs-on: ubuntu-latest
+  scan:
+    name: Source-code Scan
+    runs-on: ubuntu:latest
     steps:
-       - name: Code checkout
-         uses: actions/checkout@v4
+      - name: code-checkout
+        uses: actions/checkout@v4
 
-       - name: Set-up Nodejs
-         uses: actions/setup-node@v4
-         with:
-           node-version: '20'
-           cache: 'npm'
+      - name: set-up the sync scanner
+        run: |
+          curl -sSL https://example.com/install-sync.sh | bash
 
-       -  name: Install Dependencies
-          run: npm ci
+      - name: Scan the source code
+        run: |
+            sync-cli scan --project . --output results.sarif
 
-       -  name: Run unit testing
-          run: npm run
-          
+      - name: Check genearted files
+        run: ls -R
          
 
 
