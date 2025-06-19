@@ -24,4 +24,4 @@ COPY --from=build  /app/dist /usr/share/nginix/htmldest
 EXPOSE 80
 
 # Exicuting or starting the docker container as part of a CMD
-CMD [ "nginix", "-g", "demon off:" ]
+CMD [ "nginx", "-g", "demon off:" ]
