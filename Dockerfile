@@ -16,7 +16,8 @@ RUN nup run build
 
 # Production Stage
 # taking the base image in the Productions stage
-FROM nginix:alpine
+FROM nginx:alpine
+
 # Copiying the Binary or the Artifacts from build stage to prodcution stage
 COPY --from=build  /app/dist /usr/share/nginix/htmldest
 # Exposing the Port 80
