@@ -19,9 +19,7 @@ jobs:
 
       - name: Set up scanner
         run: |
-          echo "Installing scanner..." 
-          # Replace with your install logic (npm install, curl, etc.)
-          curl -sSL https://example.com/install-sync.sh | bash
+         curl -L https://your-tool-url/install.sh -o install.sh
 
       - name: Run scan in src/
         run: |
