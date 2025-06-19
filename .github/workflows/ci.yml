@@ -10,21 +10,36 @@ on:
 
 
 jobs:
-  scan:
+  codeql:
     runs-on: ubuntu-latest
-    name: Scan src/ directory only
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up scanner
-        run: |
-         curl -L https://your-tool-url/install.sh -o install.sh
+    - name: Set up CodeQL CLI
+      run: |
+        gh release download --repo github/codeql-cli-binaries latest --pattern "codeql-linux64.zip"
+        unzip codeql-linux64.zip
+        sudo mv codeql /opt/codeql
+        sudo ln -s /opt/codeql/codeql /usr/local/bin/codeql
 
-      - name: Run scan in src/
-        run: |
-          ./sync-scan --source ./src --output results.sarif
-          # Update the command above to match your tool's CLI format
+    - name: Create CodeQL database (only src/)
+      run: |
+        codeql database create codeql-db --language=auto --source-root=src
+
+    - name: Run CodeQL analysis on src/
+      run: |
+        codeql database analyze codeql-db --format=sarifv2.1.0 --output=codeql-report.sarif
+
+    - name: Upload SARIF report
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: codeql-report.sarif
          
 
 
