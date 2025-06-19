@@ -11,22 +11,22 @@ on:
 
 jobs:
   scan:
-    name: Source-code Scan
-    runs-on: ubuntu:latest
+    runs-on: ubuntu-latest
+    name: Scan src/ directory only
     steps:
-      - name: code-checkout
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: set-up the sync scanner
+      - name: Set up scanner
         run: |
+          echo "Installing scanner..." 
+          # Replace with your install logic (npm install, curl, etc.)
           curl -sSL https://example.com/install-sync.sh | bash
 
-      - name: Scan the source code
+      - name: Run scan in src/
         run: |
-            sync-cli scan --project . --output results.sarif
-
-      - name: Check genearted files
-        run: ls -R
+          ./sync-scan --source ./src --output results.sarif
+          # Update the command above to match your tool's CLI format
          
 
 
