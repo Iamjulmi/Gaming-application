@@ -45,7 +45,7 @@ jobs:
         run: npm ci
 
       - name: Run ESLint on src folder
-        run: npx eslint src/** --max-warnings=0
+        run: npx eslint "src/**/*.{js,jsx,ts,tsx}" --max-warnings=0
 
   build:
     name: Building the Application
