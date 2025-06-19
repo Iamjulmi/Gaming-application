@@ -19,7 +19,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copiying the Binary or the Artifacts from build stage to prodcution stage
-COPY --from=build  /app/dist /usr/share/nginix/htmldest
+COPY --from=build /app/dist /usr/share/nginx/html
 # Exposing the Port 80
 EXPOSE 80
 
