@@ -12,7 +12,7 @@ RUN npm ci
 # Copiying the Complete sourec code on to docker image
 COPY  . .
 # Building the applicatio 
-RUN nup run build 
+RUN npm run build 
 
 # Production Stage
 # taking the base image in the Productions stage
