@@ -10,37 +10,76 @@ on:
 
 
 jobs:
-  codeql:
+  test:
+    name: Unit Testing
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+       - name: Code checkout
+         uses: actions/checkout@v4
 
-    - name: Set up CodeQL CLI
-      run: |
-        gh release download --repo github/codeql-cli-binaries latest --pattern "codeql-linux64.zip"
-        unzip codeql-linux64.zip
-        sudo mv codeql /opt/codeql
-        sudo ln -s /opt/codeql/codeql /usr/local/bin/codeql
+       - name: Set-up Nodejs
+         uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+           cache: 'npm'
 
-    - name: Create CodeQL database (only src/)
-      run: |
-        codeql database create codeql-db --language=auto --source-root=src
+       -  name: Install Dependencies
+          run: npm ci
 
-    - name: Run CodeQL analysis on src/
-      run: |
-        codeql database analyze codeql-db --format=sarifv2.1.0 --output=codeql-report.sarif
+       -  name: Run unit testing
+          run: npm run
 
-    - name: Upload SARIF report
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: codeql-report.sarif
-         
+
+  lint:
+     name: Static-code Analysis
+     runs-on: ubuntu:latest
+     steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+
+      - name: set-up nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Installing the Dependency
+        run: npm ci
+
+      - name: Run ESlint
+        run: npm run lint
+
+
+  build:
+     name: Bulding the Application
+     runs-on: ubuntu:lates
+     needs: [test, lint]
+     steps:
+       - name: checkout code
+         uses: actions/checkout@v4
+
+       - name: set-up nodesjs
+         uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+           cache: 'npm'
+
+       - name: Installing the Dependacny
+         run: npm ci
+
+       - name: Buidl the Project
+         run: npm run build
+
+       - name: Upload the artifacts
+         uses: actions/upload-artifact@v4
+         with:
+           name: build-artifacts
+           path: dit/
+        
+          
+   
+     
+          
 
 
 
