@@ -4,9 +4,9 @@
 # Taking the base image 
 FROM node:20-alpine AS build
 #Setting up the Working directory inside the container
-WORKDIR /Tarun
+WORKDIR /app
 # Copying the Package.json file 
-COPY Package.json /Tarun/
+COPY package*.json ./
 # Installing the dependencies form package.json
 RUN npm ci
 # Copiying the Complete sourec code on to docker image
@@ -18,7 +18,7 @@ RUN nup run build
 # taking the base image in the Productions stage
 FROM nginix:alpine
 # Copiying the Binary or the Artifacts from build stage to prodcution stage
-COPY --from=build  /Tarun /usr/share/nginix/htmldest
+COPY --from=build  /app/dist /usr/share/nginix/htmldest
 # Exposing the Port 80
 EXPOSE 80
 
